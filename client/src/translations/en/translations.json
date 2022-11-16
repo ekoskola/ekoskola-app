@@ -1,0 +1,15 @@
+{
+  "gameform": {
+    "group": "group",
+    "subject": "subject",
+    "topic": "topic",
+    "steps": "steps",
+    "time": "time",
+    "location": "Location",
+    "outdoor": "outdoor",
+    "indoor": "indoor",
+    "physical": "physical",
+    "psychic": "psychic",
+    "select": "Select"
+  }
+}

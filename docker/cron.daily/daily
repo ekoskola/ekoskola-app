@@ -1,0 +1,4 @@
+#!/bin/bash -l
+
+# source /.env && cd /usr/src/client && yarn e2e
+echo "hi"

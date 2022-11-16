@@ -1,0 +1,31 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "lerna run --stream --scope @ekoskola/games-client start",
+    "dev:be": "lerna run --stream --scope @ekoskola/games-server start",
+    "dev:all": "lerna run --parallel start",
+    "build": "lerna run --parallel build",
+    "serve": "lerna run --stream --scope @ekoskola/games-server serve",
+    "format": "lerna run format",
+    "add:fe": "yarn workspace @ekoskola/games-client add",
+    "add:be": "yarn workspace @ekoskola/games-server add",
+    "remove:fe": "yarn workspace @ekoskola/games-client remove",
+    "remove:be": "yarn workspace @ekoskola/games-server remove",
+    "db:pending": "lerna run --stream --scope @ekoskola/games-server db:pending",
+    "db:migrate": "lerna run --stream --scope @ekoskola/games-server db:migrate",
+    "db:rollback": "lerna run --stream --scope @ekoskola/games-server db:rollback",
+    "db:rollback:all": "lerna run --stream --scope @ekoskola/games-server db:rollback:all"
+  },
+  "devDependencies": {
+    "lerna": "^3.16.4"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "exceljs": "^3.7.0"
+  }
+}

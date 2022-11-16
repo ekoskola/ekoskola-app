@@ -1,0 +1,2 @@
+MAILTO="yo@carlosgo.me"
+30 22    * * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
