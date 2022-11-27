@@ -19,7 +19,7 @@ const ekoskolaStepsCheckboxes = [
     value: 'tracking',
     label: 'Monitorování a vyhodnocování',
   },
-  {
+  {  
     name: 'ekoskola_steps',
     value: 'ekology_education',
     label: 'Ev ve výuce',
@@ -34,6 +34,11 @@ const ekoskolaStepsCheckboxes = [
     value: 'ecoschool_dex',
     label: 'Ekokodex',
   },
+  {
+    name: 'ekoskola_steps',
+    value: 'seven_steps',
+    label: 'Sedm kroků Ekoškoly',
+  }
 ];
 
 export default {
