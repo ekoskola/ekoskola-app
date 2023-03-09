@@ -2,3 +2,9 @@ node_modules
 server/logs/*
 lerna-debug.log
 data/
+
+/target
+.idea
+tags
+
+env.nix
