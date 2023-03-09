@@ -4,6 +4,7 @@
   "useWorkspaces": true,
   "packages": [
     "client",
-    "backend"
+    "backend",
+    "frontend"
   ]
 }

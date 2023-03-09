@@ -1,0 +1,16 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "password",
+    "database": "ekoskola",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "ekoskola_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

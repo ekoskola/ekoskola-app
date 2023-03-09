@@ -2,8 +2,8 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "client",
-    "server"
+    "packages/client",
+    "packages/server"
   ],
   "scripts": {
     "dev": "lerna run --stream --scope @ekoskola/games-client start",
@@ -22,7 +22,8 @@
     "db:rollback:all": "lerna run --stream --scope @ekoskola/games-server db:rollback:all"
   },
   "devDependencies": {
-    "lerna": "^3.16.4"
+    "lerna": "^6.1.0",
+    "prettier": "2.8.0"
   },
   "dependencies": {
     "axios": "^0.19.2",
