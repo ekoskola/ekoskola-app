@@ -26,15 +26,47 @@ let envHelper = import ./env.nix; in
     #     ref = "master";
     #   };
 
+    # services.postgresql = {
+    #   enable = true;
+    #   package = pkgs.postgresql_15;
+    #   enableTCPIP = true;
+    #   authentication = pkgs.lib.mkOverride 10 ''
+    #     local all all trust
+    #     host all all 127.0.0.1/32 trust
+    #     host all all ::1/128 trust
+    #   '';
+    #   initialScript = pkgs.writeText "backend-initScript" ''
+    #     CREATE ROLE nixcloud WITH LOGIN PASSWORD 'nixcloud' CREATEDB;
+    #     CREATE DATABASE nixcloud;
+    #     GRANT ALL PRIVILEGES ON DATABASE nixcloud TO nixcloud;
+    #   '';
+    # };
+
+    systemd.services.ekoskolaServer = {
+      description = "Server for ekoskola app";
+      after = [ "multi-user.target" ];
+      wantedBy = [ "multi-user.target" ];
+      path = [ pkgs.bash ];
+      serviceConfig = {
+        User = "root";
+        ExecStart = "${pkgs.nodejs}/bin/node /var/www/ekoskola/ekoskola-app/packages/src/server.js";
+        Restart = "always";
+      };
+    };
+
     services.nginx = {
       enable = true;
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
-      virtualHosts."nixkola.carlosgo.me" = {
+      virtualHosts."${envHelper.EKOSKOLA_FRONTEND_NGINX_HOST}" = {
         default = true;
         addSSL = true;
         enableACME = true;
-        root = "/var/www/ekoskola/ekoskola-app/packages/frontend/build/";
+        root = envHelper.EKOSKOLA_FRONTEND_NGINX_ROOT;
+        locations."/" = {
+          # https://stackoverflow.com/questions/43951720/react-router-and-nginx
+          tryFiles = "$uri /index.html";
+        };
       };
     };
 
@@ -51,7 +83,7 @@ let envHelper = import ./env.nix; in
         {
           scheme = "https";
           port = 443;
-          host = "nixkola.carlosgo.me";
+          host = envHelper.EKOSKOLA_FRONTEND_NGINX_HOST;
           path = "/";
           description = "Check that ekoskola is running.";
         }
