@@ -11,6 +11,7 @@ import Container from '@material-ui/core/Container';
 
 import Loader from '../components/Loader';
 import Pagination from '../components/Pagination';
+import { PageSizeSelector } from '../components/PageSizeSelector';
 
 const style = {
   linkBack: {
@@ -29,12 +30,11 @@ const PageInditatorWrapper = styled.span`
   font-size: 1.5rem;
 `;
 
-const itemsPerPage = 15;
-
 const GameListContainer = props => {
   const [totalPages, setTotalPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [offset, setOffset] = useState(0);
+  const [pageSize, setPageSize] = useState(15);
 
   const { location, history, isAdmin } = props;
   const [loading, setLoading] = useState(true);
@@ -48,20 +48,18 @@ const GameListContainer = props => {
 
   const path = `${history.location.pathname}${history.location.search}`;
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchGames = async () => {
     try {
       const gamesData = await ApiService.getGames({
         ...query,
-        limit: itemsPerPage,
+        limit: pageSize,
         offset,
       });
-      console.log('gamesData', gamesData);
       if (gamesData.count) {
-        setTotalPages(Math.ceil(gamesData.count / itemsPerPage));
+        setTotalPages(Math.ceil(gamesData.count / pageSize));
       }
-      console.log('gamesData.games', gamesData.games);
       setGames(gamesData.games);
-      console.log('games from state', games);
     } catch (error) {
       console.error(`An error occurred while loading games: ${error}`);
     }
@@ -83,13 +81,18 @@ const GameListContainer = props => {
   useEffect(() => {
     fetchGames();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offset]);
+  }, [offset, pageSize]);
 
   const onPageChanged = data => {
     const { currentPage } = data;
 
     setCurrentPage(currentPage);
-    setOffset((currentPage - 1) * itemsPerPage);
+    setOffset((currentPage - 1) * pageSize);
+  };
+
+  const handlePageSizeChange = async size => {
+    if (pageSize === size) return;
+    await setPageSize(size);
   };
 
   return (
@@ -101,6 +104,7 @@ const GameListContainer = props => {
             Zpět na filtry
           </IconButton>
         </Link>
+        <PageSizeSelector pageSize={pageSize} onChange={handlePageSizeChange} />
         {currentPage && (
           <PageInditatorWrapper className="current-page d-inline-block h-100 pl-4 text-secondary">
             Strana <span className="font-weight-bold">{currentPage}</span> /{' '}
