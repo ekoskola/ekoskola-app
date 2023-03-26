@@ -1,17 +1,21 @@
 const axios = require('axios');
 
-/**
- *
- * Service for calling GraphQL API server
- */
+const createQueryString = json => {
+  const params = new URLSearchParams();
+  for (const key in json) {
+    if (Array.isArray(json[key])) {
+      json[key].forEach(value => params.append(`${key}[]`, value));
+    } else {
+      params.append(key, json[key]);
+    }
+  }
+  return params.toString();
+};
+
 class ApiService {
-  /**
-   * define base url and field schemas here
-   * @returns {ApiService}
-   */
   constructor() {
-    this.host = window.location.origin;
-    this.apiUrl = `${this.host}/graphql`;
+    this.host = 'http://localhost:8000';
+    this.apiUrl = `${this.host}`;
     this.gameFields = `{
       id,
       name,
@@ -90,105 +94,27 @@ class ApiService {
     }
   }
 
-  async mutateGraphQlData(method, params, fields) {
-    const query = `mutation {${method}${this.paramsToString(params)} ${fields}}`;
-    const res = await fetch(this.apiUrl, {
-      method: 'POST',
-      mode: 'cors',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      }),
-      body: JSON.stringify({ query }),
-    });
-    if (res.ok) {
-      const body = await res.json();
-      return body.data;
-    } else {
-      throw new Error(res.status);
-    }
-  }
-  /**
-   * Generic function to fetch data from server
-   * @param {string} query
-   * @returns {unresolved}
-   */
-  async getGraphQlData(resource, params, fields) {
-    const query = `{${resource} ${this.paramsToString(params)} ${fields}}`;
-    const res = await fetch(this.apiUrl, {
-      method: 'POST',
-      mode: 'cors',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      }),
-      body: JSON.stringify({ query }),
-    });
-    if (res.ok) {
-      const body = await res.json();
-      return body.data;
-    } else {
-      throw new Error(res.status);
-    }
+  async getGames(filters) {
+    console.log('filters', filters);
+    const queryString = createQueryString(filters);
+    console.log('queryString', queryString);
+
+    const data = await axios.get(`${this.apiUrl}/game?${queryString}`);
+    return data.data;
   }
 
-  /**
-   *
-   * @param {object} params
-   * @returns {array} games list or empty list
-   */
-  async getGames(params = {}) {
-    const data = await this.getGraphQlData('games', params, this.gameFields);
-    return data.games;
+  async getGameById(gameId) {
+    console.log('gameId', gameId);
+    const data = await axios.get(`${this.apiUrl}/game/${gameId}`);
+    console.log('data game in ApiService', data.data);
+    return data.data;
   }
 
-  /**
-   *
-   * @param {object} params
-   * @returns {array} games game by id
-   */
-  async getGameById(params = {}) {
-    const data = await this.getGraphQlData('game', params, this.gameFields);
-    return data.game;
-  }
+  async getUser({ username, password }) {}
 
   async addGame(params) {
-    const data = await this.mutateGraphQlData('addGame', params, this.gameFields);
-    return data.addGame;
-  }
-
-  /**
-   *
-   * @param {object} params
-   * @returns {String} params converted to string for usage in graphQL
-   */
-  paramsToString(params) {
-    let paramString = '';
-    if (
-      Object.prototype.toString.apply(params) === '[object Object]' &&
-      Object.keys(params).length
-    ) {
-      let tmp = [];
-      for (let key in params) {
-        let paramStr = params[key];
-        if (
-          Object.prototype.toString.apply(paramStr) === '[object Array]' &&
-          Object.keys(params).length
-        ) {
-          // Manage arrays to be valid graphql querys
-          tmp.push(`${key}:${`["${paramStr.join('", "')}"]`}`);
-        } else if (paramStr !== '') {
-          if (typeof params[key] === 'string') {
-            paramStr = `"${paramStr}"`;
-          }
-          tmp.push(`${key}:${paramStr}`);
-        }
-      }
-      if (tmp.length) {
-        paramString = `(${tmp.join()})`;
-      }
-    }
-    return paramString;
+    // const data = await this.mutateGraphQlData('addGame', params, this.gameFields);
+    // return data.addGame;
   }
 }
 

@@ -43,22 +43,25 @@ const GameListContainer = props => {
     queryString.parse(location.search, {
       parseBooleans: true,
       arrayFormat: 'bracket',
-    })
+    }),
   );
 
   const path = `${history.location.pathname}${history.location.search}`;
 
   const fetchGames = async () => {
     try {
-      const games = await ApiService.getGames({
+      const gamesData = await ApiService.getGames({
         ...query,
         limit: itemsPerPage,
         offset,
       });
-      if (games[0].count) {
-        setTotalPages(Math.ceil(games[0].count / itemsPerPage));
+      console.log('gamesData', gamesData);
+      if (gamesData.count) {
+        setTotalPages(Math.ceil(gamesData.count / itemsPerPage));
       }
-      setGames(games);
+      console.log('gamesData.games', gamesData.games);
+      setGames(gamesData.games);
+      console.log('games from state', games);
     } catch (error) {
       console.error(`An error occurred while loading games: ${error}`);
     }
@@ -93,10 +96,7 @@ const GameListContainer = props => {
     <Container fixed>
       <TopNavigationWrapper>
         <Link className="game-link-back" to="/" style={style.linkBack}>
-          <IconButton
-            onClick={() => history.push('/')}
-            aria-label="Zpět na filtry"
-          >
+          <IconButton onClick={() => history.push('/')} aria-label="Zpět na filtry">
             <ArrowBackIcon />
             Zpět na filtry
           </IconButton>
@@ -112,12 +112,7 @@ const GameListContainer = props => {
       {loading ? (
         <Loader />
       ) : (
-        <GameList
-          listPath={path}
-          games={games}
-          isAdmin={isAdmin}
-          removeGame={removeGame}
-        />
+        <GameList listPath={path} games={games} isAdmin={isAdmin} removeGame={removeGame} />
       )}
 
       <Pagination totalPages={totalPages} onPageChanged={onPageChanged} />

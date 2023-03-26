@@ -32,5 +32,7 @@ export const GameDetailRoute = (props: GameDetailRouteProps) => {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log('gameToDisplay', gameToDisplay);
   return <div>test</div>;
 };

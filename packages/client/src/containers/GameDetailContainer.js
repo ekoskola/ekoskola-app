@@ -14,11 +14,11 @@ const GameDetailContainer = props => {
   const fetchGame = async () => {
     const gameId = parseInt(match.params.id, 10);
     try {
-      const game = await ApiService.getGameById({ id: gameId });
+      const game = await ApiService.getGameById(gameId);
       setGame(game);
       setLoading(false);
     } catch (error) {
-      console.error(`An error occured while loading game for id ${gameId}: ${error}`);
+      console.error(`Error while loading game for id ${gameId}: ${error}`);
     }
   };
 
