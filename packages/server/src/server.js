@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 
 const upload = require('./services/Upload');
 const update = require('./services/Update');
@@ -10,6 +11,7 @@ const remove = require('./services/Remove');
 const authService = require('./services/AuthService');
 
 const Games = require('./db/models/Game');
+const Users = require('./db/models/Users');
 
 require('dotenv').config();
 
@@ -36,22 +38,25 @@ app.get('/health', (req, res) => {
   });
 });
 
-app.post('/login', (req, res, next) => {
+app.post('/login', async (req, res, next) => {
   const expirationDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
 
   const { username, password } = req.body;
-  const secretUserName = process.env.APP_USERNAME;
-  const secretPassword = process.env.APP_PASSWORD;
-
-  if (username === secretUserName && password === secretPassword) {
-    const token = authService.issue({
-      username,
-    });
-    res.cookie('token', token, { expires: expirationDate, httpOnly: true });
-    return res.status(200).json({ token });
-  } else {
-    return res.status(403).json({ msg: 'ACCESS FORBIDDEN' });
+  const user = await Users.findOne({ where: { username: username } });
+  if (!user) {
+    return res.status(401).send('Invalid username or password');
   }
+
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) {
+    return res.status(401).send('Invalid username or password');
+  }
+
+  const token = authService.issue({
+    username,
+  });
+  res.cookie('token', token, { expires: expirationDate, httpOnly: true });
+  return res.status(200).json({ token });
 });
 
 app.post('/logout', (req, res, next) => {
@@ -71,7 +76,6 @@ app.get('/game/:id', async (req, res, next) => {
 });
 
 app.get('/game', async (req, res, next) => {
-  console.log('game');
   const {
     limit,
     offset,
@@ -84,7 +88,7 @@ app.get('/game', async (req, res, next) => {
     timing,
     number_teachers,
     physical_activity,
-  } = req.params;
+  } = req.query;
 
   const where = {};
   if (grade && grade.length > 0) {
@@ -120,15 +124,12 @@ app.get('/game', async (req, res, next) => {
   if (physical_activity && physical_activity.length > 0) {
     where.physical_activity = physical_activity;
   }
-  console.log('where', where);
   try {
     const count = await Games.count();
     const response = await Games.findAll({ limit, offset, where });
-    console.log('response', response);
     const games = response.map(game => {
       return game.dataValues;
     });
-    console.log('games', games);
     res.json({ games, count });
   } catch (error) {
     console.error(error);

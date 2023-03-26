@@ -16,10 +16,10 @@
     "add:be": "yarn workspace @ekoskola/games-server add",
     "remove:fe": "yarn workspace @ekoskola/games-client remove",
     "remove:be": "yarn workspace @ekoskola/games-server remove",
-    "db:pending": "lerna run --stream --scope @ekoskola/games-server db:pending",
-    "db:migrate": "lerna run --stream --scope @ekoskola/games-server db:migrate",
-    "db:rollback": "lerna run --stream --scope @ekoskola/games-server db:rollback",
-    "db:rollback:all": "lerna run --stream --scope @ekoskola/games-server db:rollback:all"
+    "db:migrate": "yarn workspace @ekoskola/server db:migrate",
+    "db:rollback": "yarn workspace @ekoskola/server db:rollback",
+    "db:undo": "yarn workspace @ekoskola/server db:undo",
+    "db:seed": "yarn workspace @ekoskola/server db:seed"
   },
   "devDependencies": {
     "lerna": "^6.1.0",
