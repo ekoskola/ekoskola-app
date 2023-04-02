@@ -38,6 +38,7 @@ const PrivateRouteCreateGame = ({ component: Component, ...rest }) => (
 );
 
 const PrivateRouteEditGame = ({ component: Component, ...rest }) => {
+  console.log('PrivateRouteEditGame');
   const AdminEditGameContainer = AuthAsyncComponent(() => {
     return import('./containers/EditGameContainer');
   });

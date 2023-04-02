@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import HeroBanner from '../components/HeroBanner';
 import styled from 'styled-components';
 
-import FiltersGame from '../components/FiltersGame';
+import { FiltersGame } from '../components/FiltersGame';
 
 const Wrapper = styled.section`
   display: flex;
@@ -22,14 +22,10 @@ const GameFilterContainer = ({ filterState, setFilterState }) => {
   const handleCheckboxChange = item => {
     const isChecked = filterState[item.name].includes(item.value) || false;
     if (isChecked) {
-      filterState[item.name] = filterState[item.name].filter(
-        selected => selected !== item.value
-      );
+      filterState[item.name] = filterState[item.name].filter(selected => selected !== item.value);
       setFilterState({
         ...filterState,
-        [item.name]: filterState[item.name].filter(
-          selected => selected !== item.value
-        ),
+        [item.name]: filterState[item.name].filter(selected => selected !== item.value),
       });
     } else {
       setFilterState({
@@ -44,9 +40,7 @@ const GameFilterContainer = ({ filterState, setFilterState }) => {
       <HeroBanner />
       <Wrapper>
         <section>
-          <FormTitle>
-            Vyfiltruj si svou aktivitu nebo metodický materiál
-          </FormTitle>
+          <FormTitle>Vyfiltruj si svou aktivitu nebo metodický materiál</FormTitle>
           <FiltersGame
             isEdit={false}
             formData={filterState}

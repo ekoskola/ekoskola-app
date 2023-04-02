@@ -110,6 +110,14 @@ class ApiService {
     return data.data;
   }
 
+  async voteGameById(gameId, rating) {
+    const data = await axios.post(`${this.apiUrl}/game/${gameId}/vote`, {
+      rating,
+    });
+    console.log('data voteGameById');
+    return data.data;
+  }
+
   async getUser({ username, password }) {}
 
   async addGame(params) {

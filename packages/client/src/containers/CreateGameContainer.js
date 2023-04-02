@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 
 import ApiService from '../ApiService';
-import FiltersGame from '../components/FiltersGame';
+import { FiltersGame } from '../components/FiltersGame';
 import Upload from '../components/Upload';
 import Loader from '../components/Loader';
 
@@ -91,9 +91,7 @@ const CreateGameContainer = props => {
   const handleCheckboxChange = item => {
     const isChecked = form[item.name].includes(item.value) || false;
     if (isChecked) {
-      form[item.name] = form[item.name].filter(
-        selected => selected !== item.value
-      );
+      form[item.name] = form[item.name].filter(selected => selected !== item.value);
     } else {
       form[item.name].push(item.value);
     }

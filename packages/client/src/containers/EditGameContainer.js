@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 
 import ApiService from '../ApiService';
-import FiltersGame from '../components/FiltersGame';
+import { FiltersGame, RadioList } from '../components/FiltersGame';
 import Upload from '../components/Upload';
 import Loader from '../components/Loader';
 
@@ -47,6 +47,8 @@ const TextAreaLabel = styled.label`
 `;
 
 const EditGameContainer = props => {
+  console.log('EditGameContainer');
+  console.log('props', props);
   const { match, history } = props;
   const [loading, setLoading] = useState(true);
   const formState = {
@@ -64,6 +66,7 @@ const EditGameContainer = props => {
     timing: [],
     physical_activity: [],
     number_teachers: [],
+    isTop: false,
   };
 
   const [form, setForm] = useState(formState);
@@ -78,11 +81,14 @@ const EditGameContainer = props => {
 
   const fetchGame = async () => {
     try {
-      const game = await ApiService.getGameById({ id: gameId });
+      const game = await ApiService.getGameById(gameId);
+      console.log('game', game);
+
+      // TODO: create ApiService getTop count
       setForm(game);
       setLoading(false);
     } catch (error) {
-      console.error(`An error occured while loading game for id ${gameId}: ${error}`);
+      console.error(`Error while loading game for id ${gameId}: ${error}`);
     }
   };
 
@@ -132,7 +138,7 @@ const EditGameContainer = props => {
       console.error(`there was an error ${error.message}`);
     }
   };
-  const { name, description, objetive_1, objetive_2, objetive_3 } = form;
+  const { name, description, objetive_1, objetive_2, objetive_3, isTop } = form;
 
   const handleDrop = file => {
     setFile({
@@ -166,7 +172,7 @@ const EditGameContainer = props => {
               id="description"
               name="description"
               label="Krátký popis"
-              value={description}
+              value={description ?? ''}
               className={styles.textField}
               style={{ height: '5rem' }}
               margin="normal"
@@ -178,7 +184,7 @@ const EditGameContainer = props => {
               id="objetive_1"
               name="objetive_1"
               label="Cíl 1"
-              value={objetive_1}
+              value={objetive_1 ?? ''}
               className={styles.textField}
               style={{ height: '5rem' }}
               margin="normal"
@@ -190,7 +196,7 @@ const EditGameContainer = props => {
               id="objetive_2"
               name="objetive_2"
               label="Cíl 2"
-              value={objetive_2}
+              value={objetive_2 ?? ''}
               className={styles.textField}
               style={{ height: '5rem' }}
               margin="normal"
@@ -202,7 +208,7 @@ const EditGameContainer = props => {
               id="objetive_3"
               name="objetive_3"
               label="Cíl 3"
-              value={objetive_3}
+              value={objetive_3 ?? ''}
               className={styles.textField}
               style={{ height: '5rem' }}
               margin="normal"
@@ -215,6 +221,12 @@ const EditGameContainer = props => {
             handleCheckboxChange={handleCheckboxChange}
             handleRadioButtonChange={handleRadioButtonChange}
           />
+          {/* <RadioList
+              title="Is Top?"
+              checkboxes={['Ano', 'Ne']}
+              selectedItems={isTop ? 'Ano' : 'Ne'}
+              handleChange={handleRadioButtonChange}
+            /> */}
 
           <Button
             variant="contained"

@@ -38,13 +38,7 @@ const FilterTitle = styled.div`
   }
 `;
 
-const RadioList = ({
-  title,
-  handleChange,
-  selected,
-  radioButtons,
-  groupName,
-}) => {
+export const RadioList = ({ title, handleChange, selected, radioButtons, groupName }) => {
   return (
     <FilterWrapper>
       <FilterTitle>{title}</FilterTitle>
@@ -63,12 +57,7 @@ const RadioList = ({
   );
 };
 
-const CheckboxList = ({
-  title = 'titulo',
-  checkboxes,
-  selectedItems,
-  handleChange,
-}) => {
+const CheckboxList = ({ title = 'titulo', checkboxes, selectedItems, handleChange }) => {
   return (
     <FilterWrapper>
       <FilterTitle>{title}</FilterTitle>
@@ -91,22 +80,10 @@ const CheckboxList = ({
   );
 };
 
-const FiltersGame = props => {
-  const {
-    isEdit,
-    handleCheckboxChange,
-    handleRadioButtonChange,
-    formData,
-  } = props;
+export const FiltersGame = props => {
+  const { isEdit, handleCheckboxChange, handleRadioButtonChange, formData } = props;
 
-  const {
-    location,
-    grade,
-    topics,
-    subjects,
-    ekoskola_steps,
-    timing,
-  } = formData;
+  const { location, grade, topics, subjects, ekoskola_steps, timing } = formData;
 
   return (
     <React.Fragment>
@@ -176,5 +153,3 @@ const FiltersGame = props => {
     </React.Fragment>
   );
 };
-
-export default FiltersGame;
