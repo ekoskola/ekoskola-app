@@ -51,6 +51,15 @@ Games.init(
     file_id: {
       type: Sequelize.STRING,
     },
+    isTop: {
+      type: Sequelize.BOOLEAN,
+    },
+    votes_value: {
+      type: Sequelize.INTEGER,
+    },
+    votes_count: {
+      type: Sequelize.INTEGER,
+    },
   },
   {
     sequelize: Database,

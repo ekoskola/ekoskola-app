@@ -1,15 +1,26 @@
 const fs = require('fs');
-// const Game = require('../models/game');
 
 const games = JSON.parse(fs.readFileSync(__dirname + '/games.json', 'utf8'));
-// console.log('games', games);
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('Games', [
-      games.map(game => ({ ...game, createdAt: new Date(), updatedAt: new Date() }))[0],
-    ]);
+    const formattedGames = games.map(game => {
+      for (const prop in game) {
+        if (Array.isArray(game[prop]) && game[prop].length === 0) {
+          console.log(`${prop} is an empty array`);
+          // Removing properties with empty array so it does not create error in db.
+          delete game[prop];
+        }
+      }
+      return {
+        ...game,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isTop: true,
+      };
+    });
+    return queryInterface.bulkInsert('Games', formattedGames);
   },
 
   async down(queryInterface, Sequelize) {

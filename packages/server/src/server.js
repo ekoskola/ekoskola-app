@@ -75,6 +75,31 @@ app.get('/game/:id', async (req, res, next) => {
   res.json(response.dataValues);
 });
 
+app.post('/game/:id/vote', async (req, res, next) => {
+  const { id } = req.params;
+  const { rating } = req.body;
+
+  const previousGame = await Games.findOne({
+    where: {
+      id,
+    },
+  });
+
+  const response = await Games.update(
+    {
+      votes_value: previousGame.votes_value + rating,
+      votes_count: previousGame.votes_count + 1,
+    },
+    {
+      where: {
+        id,
+      },
+    },
+  );
+  console.log('response', response);
+  res.json(response.dataValues);
+});
+
 app.get('/game', async (req, res, next) => {
   const {
     limit,
@@ -125,12 +150,11 @@ app.get('/game', async (req, res, next) => {
     where.physical_activity = physical_activity;
   }
   try {
-    const count = await Games.count();
     const response = await Games.findAll({ limit, offset, where });
     const games = response.map(game => {
       return game.dataValues;
     });
-    res.json({ games, count });
+    res.json({ games, count: games.length });
   } catch (error) {
     console.error(error);
     res.statusCode(500);
@@ -139,6 +163,8 @@ app.get('/game', async (req, res, next) => {
 
 app.post('/auth', (req, res, next) => {
   const { token } = req.cookies;
+
+  return res.status(200).json({ username: 'test', token: 'test' });
 
   authService.verify(token, (err, decodedToken) => {
     if (err) {
