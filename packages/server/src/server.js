@@ -31,14 +31,14 @@ app.use(bodyParser.json());
 // Serve the static files from the React app
 app.use(express.static(path.join(__dirname, './../../client/build')));
 
-app.get('/health', (req, res) => {
+app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'UP',
     message: 'Server is healthy',
   });
 });
 
-app.post('/login', async (req, res, next) => {
+app.post('/api/login', async (req, res, next) => {
   const expirationDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
 
   const { username, password } = req.body;
@@ -59,12 +59,12 @@ app.post('/login', async (req, res, next) => {
   return res.status(200).json({ token });
 });
 
-app.post('/logout', (req, res, next) => {
+app.post('/api/logout', (req, res, next) => {
   res.cookie('token', null, { httpOnly: true });
   return res.status(200).json({});
 });
 
-app.get('/game/:id', async (req, res, next) => {
+app.get('/api/game/:id', async (req, res, next) => {
   const { id } = req.params;
 
   const response = await Games.findOne({
@@ -75,7 +75,7 @@ app.get('/game/:id', async (req, res, next) => {
   res.json(response.dataValues);
 });
 
-app.post('/game/:id/vote', async (req, res, next) => {
+app.post('/api/game/:id/vote', async (req, res, next) => {
   const { id } = req.params;
   const { rating } = req.body;
 
@@ -100,7 +100,7 @@ app.post('/game/:id/vote', async (req, res, next) => {
   res.json(response.dataValues);
 });
 
-app.get('/game', async (req, res, next) => {
+app.get('/api/game', async (req, res, next) => {
   const {
     limit,
     offset,
@@ -161,7 +161,7 @@ app.get('/game', async (req, res, next) => {
   }
 });
 
-app.post('/auth', (req, res, next) => {
+app.post('/api/auth', (req, res, next) => {
   const { token } = req.cookies;
 
   return res.status(200).json({ username: 'test', token: 'test' });
@@ -176,21 +176,21 @@ app.post('/auth', (req, res, next) => {
   });
 });
 
-app.post('/upload', upload);
+app.post('/api/upload', upload);
 
-app.post('/update/:gameId', update);
+app.post('/api/update/:gameId', update);
 
-app.post('/remove/:gameId', remove);
+app.post('/api/remove/:gameId', remove);
 
-app.get('/download/:fileId', function (req, res) {
+app.get('/api/download/:fileId', function (req, res) {
   const fileId = req.params.fileId;
   const file = `${__dirname}./../uploads/${fileId}`;
   res.download(file); // Set disposition and send it.
 });
 
-// app.get('*', function (req, res) {
-//   res.sendFile(path.join(__dirname, './../../client/build', 'index.html'));
-// });
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, './../../client/build', 'index.html'));
+});
 
 app.listen(port, () => {
   console.info(`\n\nExpress listen at http://localhost:${port} \n`);
