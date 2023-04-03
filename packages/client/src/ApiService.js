@@ -14,8 +14,9 @@ const createQueryString = json => {
 
 class ApiService {
   constructor() {
-    this.host = 'http://localhost:8000';
-    this.apiUrl = `${this.host}`;
+    // this.host = 'http://localhost:8000';
+    this.host = window.origin;
+    this.apiUrl = `${this.host}/api`;
     this.gameFields = `{
       id,
       name,

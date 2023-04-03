@@ -8,3 +8,5 @@ data/
 tags
 
 env.nix
+
+build/
