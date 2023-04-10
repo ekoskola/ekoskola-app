@@ -184,7 +184,7 @@ app.post('/api/remove/:gameId', remove);
 
 app.get('/api/download/:fileId', function (req, res) {
   const fileId = req.params.fileId;
-  const file = `${__dirname}./../uploads/${fileId}`;
+  const file = path.join(__dirname, `../uploads/${fileId}`);
   res.download(file); // Set disposition and send it.
 });
 
