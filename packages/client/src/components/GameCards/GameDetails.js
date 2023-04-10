@@ -79,7 +79,7 @@ const GameDetails = props => {
       </CardActions>
       {file_id && (
         <DocumentWrapper>
-          <Document file={`${url}/download/${file_id}`} onLoadSuccess={onDocumentLoadSuccess}>
+          <Document file={`${url}/api/download/${file_id}`} onLoadSuccess={onDocumentLoadSuccess}>
             {[...new Array(numPages)].map((item, index) => (
               <Page pageNumber={index + 1} width="1000" />
               // <Page pageNumber={index + 1} />

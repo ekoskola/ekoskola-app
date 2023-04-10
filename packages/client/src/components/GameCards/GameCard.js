@@ -39,11 +39,7 @@ export default function GameCard(props) {
           </React.Fragment>
         ) : null}
         <DownloadGame fileId={file_id} />
-        <OpenLInkButton
-          path={`/games/${id}`}
-          label="Detail aktivity"
-          icon="open"
-        />
+        <OpenLInkButton path={`/games/${id}`} label="Detail aktivity" icon="open" />
       </CardActions>
     </Card>
   );

@@ -6,7 +6,7 @@ import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import ColorButton from './ColorButton';
 
 function DownloadGameButton({ fileId }) {
-  const url = window.location.origin;
+  const url = `${window.location.origin}/api`;
 
   return (
     <React.Fragment>
