@@ -9,7 +9,7 @@ import GameFilterContainer from './containers/GameFilterContainer';
 import NotFound from './containers/NotFound';
 import Login from './containers/Login';
 import auth from './services/auth';
-import Loader from './components/Loader';
+import { Loader } from './components/Loader';
 
 import Layout from './components/Layout';
 import AuthAsyncComponent from './components/AuthAsyncComponent';

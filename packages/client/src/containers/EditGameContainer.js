@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import ApiService from '../ApiService';
 import { FiltersGame, RadioList } from '../components/FiltersGame';
 import Upload from '../components/Upload';
-import Loader from '../components/Loader';
+import { Loader } from '../components/Loader';
 
 import TextField from '@material-ui/core/TextField';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';

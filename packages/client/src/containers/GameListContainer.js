@@ -9,7 +9,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 
-import Loader from '../components/Loader';
+import { Loader } from '../components/Loader';
 import Pagination from '../components/Pagination';
 import { PageSizeSelector } from '../components/PageSizeSelector';
 
