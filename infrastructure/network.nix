@@ -33,11 +33,11 @@ let envHelper = import ./env.nix; in
         host all all 127.0.0.1/32 trust
         host all all ::1/128 trust
       '';
-      initialScript = pkgs.writeText "backend-initScript" ''
-        CREATE ROLE ${envHelper.EKOSKOLA_DB_NAME} WITH LOGIN PASSWORD '${envHelper.EKOSKOLA_DB_PASSWORD}' CREATEDB;
-        CREATE DATABASE ${envHelper.EKOSKOLA_DB_NAME};
-        GRANT ALL PRIVILEGES ON DATABASE ${envHelper.EKOSKOLA_DB_NAME} TO ${envHelper.EKOSKOLA_DB_NAME};
-      '';
+      # initialScript = pkgs.writeText "backend-initScript" ''
+      #   CREATE ROLE ${envHelper.EKOSKOLA_DB_NAME} WITH LOGIN PASSWORD '${envHelper.EKOSKOLA_DB_PASSWORD}' CREATEDB;
+      #   CREATE DATABASE ${envHelper.EKOSKOLA_DB_NAME};
+      #   GRANT ALL PRIVILEGES ON DATABASE ${envHelper.EKOSKOLA_DB_NAME} TO ${envHelper.EKOSKOLA_DB_NAME};
+      # '';
     };
 
     systemd.services.ekoskolaServer = {
@@ -47,7 +47,8 @@ let envHelper = import ./env.nix; in
       path = [ pkgs.bash ];
       serviceConfig = {
         User = "root";
-        ExecStart = "${pkgs.nodejs}/bin/node /var/www/ekoskola/ekoskola-app/packages/src/server.js";
+        WorkingDirectory = "/var/www/ekoskola/ekoskola-app";
+        ExecStart = "${pkgs.yarn}/bin/yarn workspace @ekoskola/server start";
         Restart = "always";
       };
     };
