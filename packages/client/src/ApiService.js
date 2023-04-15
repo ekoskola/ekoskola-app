@@ -96,18 +96,14 @@ class ApiService {
   }
 
   async getGames(filters) {
-    console.log('filters', filters);
     const queryString = createQueryString(filters);
-    console.log('queryString', queryString);
 
     const data = await axios.get(`${this.apiUrl}/game?${queryString}`);
     return data.data;
   }
 
   async getGameById(gameId) {
-    console.log('gameId', gameId);
     const data = await axios.get(`${this.apiUrl}/game/${gameId}`);
-    console.log('data game in ApiService', data.data);
     return data.data;
   }
 
@@ -115,7 +111,6 @@ class ApiService {
     const data = await axios.post(`${this.apiUrl}/game/${gameId}/vote`, {
       rating,
     });
-    console.log('data voteGameById');
     return data.data;
   }
 
@@ -127,4 +122,6 @@ class ApiService {
   }
 }
 
-export default new ApiService();
+const apiService = new ApiService();
+
+export default apiService;
