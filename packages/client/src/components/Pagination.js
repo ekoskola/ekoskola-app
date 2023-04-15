@@ -56,24 +56,13 @@ const Pagination = ({ totalPages, pageLimit = 10, onPageChanged }) => {
           </a>
         </li>
         {pages.map((page, index) => (
-          <li
-            key={index}
-            className={`page-item${currentPage === page ? ' active' : ''}`}
-          >
-            <a
-              className="page-link"
-              href="#"
-              onClick={e => onPageClick(page, e)}
-            >
+          <li key={index} className={`page-item${currentPage === page ? ' active' : ''}`}>
+            <a className="page-link" href="#" onClick={e => onPageClick(page, e)}>
               {page}
             </a>
           </li>
         ))}
-        <li
-          className={`page-item${
-            currentPage === totalPages || !totalPages ? ' disabled' : ''
-          }`}
-        >
+        <li className={`page-item${currentPage === totalPages || !totalPages ? ' disabled' : ''}`}>
           <a className="page-link" href="#" onClick={onNext}>
             Další
           </a>

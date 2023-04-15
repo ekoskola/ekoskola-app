@@ -34,14 +34,13 @@ const HeroBanner = props => {
       <TextBanner>
         <TitleBanner>Vítejte v databázi aktivit Ekoškoly</TitleBanner>
         <p>
-          V této databázi naleznete veškeré aktuální metodické materiály pro
-          Vaší práci koordinátora Ekotýmu a zároveň si zde můžete vyfiltrovat
-          všechny aktivity z doposud vytvořených metodických materiálů. Aktivity
-          a materiály můžete využít do výuky i pro schůzky Ekotýmu. Aktivity
-          můžete filtrovat podle níže uvedených kritérií. Pokud nezaškrtnete
-          žádné kritérium, zobrazí se vám celý seznam aktivit, bez filtrování.
-          Tuto databázi nám pomáhali vytvářet učitelé z Ekoškol, pokud nám
-          chcete pomoci i vy s vylepšením tohoto projektu uvítáme{' '}
+          V této databázi naleznete veškeré aktuální metodické materiály pro Vaší práci koordinátora
+          Ekotýmu a zároveň si zde můžete vyfiltrovat všechny aktivity z doposud vytvořených
+          metodických materiálů. Aktivity a materiály můžete využít do výuky i pro schůzky Ekotýmu.
+          Aktivity můžete filtrovat podle níže uvedených kritérií. Pokud nezaškrtnete žádné
+          kritérium, zobrazí se vám celý seznam aktivit, bez filtrování. Tuto databázi nám pomáhali
+          vytvářet učitelé z Ekoškol, pokud nám chcete pomoci i vy s vylepšením tohoto projektu
+          uvítáme{' '}
           <a
             target="_blank"
             rel="noopener noreferrer"

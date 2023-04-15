@@ -15,7 +15,7 @@ const HeaderWrapper = styled.div`
   font-size: 16px;
 `;
 
-const HeaderLink = styled.a`
+const HeaderLink = styled.div`
   float: left;
   text-align: center;
   padding: 12px;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import auth from '../services/auth';
@@ -71,7 +71,7 @@ const Login = ({ isAdmin, setIsAdmin }) => {
   };
 
   if (isAdmin === true) {
-    return <Redirect to={'/'} />;
+    return <Navigate to={'/'} />;
   }
 
   return (

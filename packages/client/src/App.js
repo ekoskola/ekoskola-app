@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { translate } from 'react-i18next';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { withTranslation } from 'react-i18next';
 import './styles/style.css';
 
 import GameListContainer from './containers/GameListContainer';
@@ -31,10 +31,12 @@ const AdminCreateGameContainer = AuthAsyncComponent(() => {
 });
 
 const PrivateRouteCreateGame = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={props => <AdminCreateGameContainer {...props} filterState={filterInitialState} />}
-  />
+  <Routes>
+    <Route
+      {...rest}
+      render={props => <AdminCreateGameContainer {...props} filterState={filterInitialState} />}
+    />
+  </Routes>
 );
 
 const PrivateRouteEditGame = ({ component: Component, ...rest }) => {
@@ -43,10 +45,12 @@ const PrivateRouteEditGame = ({ component: Component, ...rest }) => {
     return import('./containers/EditGameContainer');
   });
   return (
-    <Route
-      {...rest}
-      render={props => <AdminEditGameContainer {...props} filterState={filterInitialState} />}
-    />
+    <Routes>
+      <Route
+        {...rest}
+        render={props => <AdminEditGameContainer {...props} filterState={filterInitialState} />}
+      />
+    </Routes>
   );
 };
 
@@ -89,36 +93,24 @@ const App = () => {
   return (
     <BrowserRouter>
       <Layout isAdmin={isAdmin} logout={logout}>
-        <Switch>
+        <Routes>
           <Route
-            exact
             path="/"
-            render={props => (
-              <GameFilterContainer
-                {...props}
-                filterState={filterState}
-                setFilterState={setFilterState}
-              />
-            )}
+            element={
+              <GameFilterContainer filterState={filterState} setFilterState={setFilterState} />
+            }
           />
-          <Route
-            exact
-            path="/games"
-            render={props => <GameListContainer {...props} isAdmin={isAdmin} />}
-          />
-          <Route path="/games/:id" exact component={GameDetailContainer} />
-          <Route
-            path="/login"
-            render={props => <Login {...props} isAdmin={isAdmin} setIsAdmin={setIsAdmin} />}
-          />
-          <PrivateRouteCreateGame path="/create" />
-          <PrivateRouteEditGame path="/edit/:id" />
+          <Route path="/games" element={<GameListContainer isAdmin={isAdmin} />} />
+          <Route path="/games/:id" element={<GameDetailContainer />} />
+          <Route path="/login" element={<Login isAdmin={isAdmin} setIsAdmin={setIsAdmin} />} />
+          <Route path="/create" element={<PrivateRouteCreateGame />} />
+          <Route path="/edit/:id" element={<PrivateRouteEditGame />} />
           <Route component={NotFound} />
-        </Switch>
+        </Routes>
       </Layout>
     </BrowserRouter>
   );
 };
 
 // We can pass a default namespace to translate(), in our example we're setting it to 'translations'
-export default translate('translations')(App);
+export default withTranslation('translations')(App);

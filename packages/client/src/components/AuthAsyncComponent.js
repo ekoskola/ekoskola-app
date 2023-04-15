@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import auth from '../services/auth';
 import { Loader } from '../components/Loader';
@@ -29,7 +29,7 @@ const AuthAsyncComponent = importComponent => {
       const { redirectToLogin } = this.state;
 
       if (redirectToLogin === true) {
-        return <Redirect to="/login" />;
+        return <Navigate to="/login" />;
       }
 
       return C ? <C {...this.props} /> : <Loader />;

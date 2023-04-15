@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import queryString from 'query-string';
 import GameList from '../components/GameList';
-import { Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
+
 import ApiService from '../ApiService';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -30,13 +31,15 @@ const PageInditatorWrapper = styled.span`
   font-size: 1.5rem;
 `;
 
-const GameListContainer = props => {
+const GameListContainer = ({ isAdmin }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [totalPages, setTotalPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [offset, setOffset] = useState(0);
   const [pageSize, setPageSize] = useState(15);
 
-  const { location, history, isAdmin } = props;
   const [loading, setLoading] = useState(true);
   const [games, setGames] = useState([]);
   const [query] = useState(
@@ -46,9 +49,6 @@ const GameListContainer = props => {
     }),
   );
 
-  const path = `${history.location.pathname}${history.location.search}`;
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchGames = async () => {
     try {
       const gamesData = await ApiService.getGames({
@@ -80,7 +80,6 @@ const GameListContainer = props => {
 
   useEffect(() => {
     fetchGames();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offset, pageSize]);
 
   const onPageChanged = data => {
@@ -99,7 +98,7 @@ const GameListContainer = props => {
     <Container fixed>
       <TopNavigationWrapper>
         <Link className="game-link-back" to="/" style={style.linkBack}>
-          <IconButton onClick={() => history.push('/')} aria-label="Zpět na filtry">
+          <IconButton onClick={() => navigate('/')} aria-label="Zpět na filtry">
             <ArrowBackIcon />
             Zpět na filtry
           </IconButton>
@@ -113,11 +112,7 @@ const GameListContainer = props => {
         )}
       </TopNavigationWrapper>
 
-      {loading ? (
-        <Loader />
-      ) : (
-        <GameList listPath={path} games={games} isAdmin={isAdmin} removeGame={removeGame} />
-      )}
+      {loading ? <Loader /> : <GameList games={games} isAdmin={isAdmin} removeGame={removeGame} />}
 
       <Pagination totalPages={totalPages} onPageChanged={onPageChanged} />
     </Container>

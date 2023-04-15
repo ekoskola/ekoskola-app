@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 
 const createQueryString = json => {
   const params = new URLSearchParams();
@@ -14,8 +14,8 @@ const createQueryString = json => {
 
 class ApiService {
   constructor() {
-    // this.host = 'http://localhost:8000';
-    this.host = window.origin;
+    this.host = 'http://localhost:8000';
+    // this.host = window.origin;
     this.apiUrl = `${this.host}/api`;
     this.gameFields = `{
       id,

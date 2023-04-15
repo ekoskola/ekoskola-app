@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import GameDetails from '../components/GameCards/GameDetails';
 import ApiService from '../ApiService';
 
@@ -6,13 +8,14 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 
-const GameDetailContainer = props => {
-  const { match, history } = props;
+const GameDetailContainer = () => {
   const [loading, setLoading] = useState(true);
   const [game, setGame] = useState(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const fetchGame = async () => {
-    const gameId = parseInt(match.params.id, 10);
+    const gameId = parseInt(id, 10);
     try {
       const game = await ApiService.getGameById(gameId);
       setGame(game);
@@ -24,12 +27,11 @@ const GameDetailContainer = props => {
 
   useEffect(() => {
     fetchGame();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Container fixed>
-      <IconButton onClick={() => history.goBack()} aria-label="zpět na seznam her">
+      <IconButton onClick={() => navigate(-1)} aria-label="zpět na seznam her">
         <ArrowBackIcon />
         Zpět na seznam her
       </IconButton>

@@ -1,6 +1,6 @@
 import React from 'react';
 import GameCard from './GameCards/GameCard';
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 
 import styled from 'styled-components';
 
@@ -11,8 +11,8 @@ const GameList = props => {
   if (!games || !games.length) {
     return (
       <h2>
-        Tvůj výběr byl moc specifický, zkus ubrat nějaké zaškrtnutí. Když
-        nezaškrtneš nic, objeví se ti všechny aktivity co máme.{' '}
+        Tvůj výběr byl moc specifický, zkus ubrat nějaké zaškrtnutí. Když nezaškrtneš nic, objeví se
+        ti všechny aktivity co máme.{' '}
       </h2>
     );
   }
@@ -20,15 +20,10 @@ const GameList = props => {
   return (
     <GameListWrapper>
       {games.map((item, index) => (
-        <GameCard
-          isAdmin={isAdmin}
-          removeGame={removeGame}
-          key={index}
-          {...item}
-        />
+        <GameCard isAdmin={isAdmin} removeGame={removeGame} key={index} {...item} />
       ))}
     </GameListWrapper>
   );
 };
 
-export default withRouter(GameList);
+export default GameList;

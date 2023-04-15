@@ -15,8 +15,8 @@ const Footer = () => (
         </a>
         <br />
         <p>
-          Ekoškola pomáhá žákům, učitelům a rodičům proměnit školu v
-          příjemnější, demokratičtější a k přírodě bližší místo k životu.
+          Ekoškola pomáhá žákům, učitelům a rodičům proměnit školu v příjemnější, demokratičtější a
+          k přírodě bližší místo k životu.
         </p>
       </div>
     </div>

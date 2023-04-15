@@ -25,9 +25,7 @@ const styles = {
   },
 };
 
-const GameDetails = props => {
-  const { id, name, file_id, description, objetive_1, objetive_2, objetive_3 } = props;
-
+const GameDetails = ({ id, name, file_id, description, objetive_1, objetive_2, objetive_3 }) => {
   const [numPages, setNumPages] = useState(null);
   const [rating, setRating] = useState(0);
   const url = window.location.origin;
@@ -42,9 +40,7 @@ const GameDetails = props => {
   };
 
   const handleVoteGame = async () => {
-    console.log('vote!!!', rating);
-    console.log('id', id);
-    // TODO: save this!!!!
+    // TODO: make some reaction after voting.
     const response = await ApiService.voteGameById(id, rating);
     console.log('response', response);
   };

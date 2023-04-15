@@ -33,7 +33,7 @@ function Upload({ handleDrop }) {
       });
       handleDrop(file);
     },
-    [handleDrop]
+    [handleDrop],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -55,8 +55,8 @@ function Upload({ handleDrop }) {
         <p>Přetáhni soubor pdf sem ...</p>
       ) : (
         <p>
-          Přetáhni soubor pdf sem, nebo klikni a vyber soubor ze složky. Max.
-          velikost pdf je 2 Mb. Povolený formát pouze pdf.
+          Přetáhni soubor pdf sem, nebo klikni a vyber soubor ze složky. Max. velikost pdf je 2 Mb.
+          Povolený formát pouze pdf.
         </p>
       )}
     </UploadWrapper>
