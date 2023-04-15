@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
@@ -6,7 +7,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import styled from 'styled-components';
+import TwoColumnWrapper from './TwoColumnWrapper';
 
 import topicsFilter from '../filters/topics';
 import locationFilter from '../filters/location';
@@ -86,7 +87,7 @@ export const FiltersGame = props => {
   const { location, grade, topics, subjects, ekoskola_steps, timing } = formData;
 
   return (
-    <React.Fragment>
+    <TwoColumnWrapper>
       <FormGroup row>
         <CheckboxList
           title={gradesFilter.title.label}
@@ -150,6 +151,6 @@ export const FiltersGame = props => {
           />
         )}
       </FormGroup>
-    </React.Fragment>
+    </TwoColumnWrapper>
   );
 };
