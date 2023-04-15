@@ -96,7 +96,6 @@ app.post('/api/game/:id/vote', async (req, res, next) => {
       },
     },
   );
-  console.log('response', response);
   res.json(response.dataValues);
 });
 
@@ -150,11 +149,13 @@ app.get('/api/game', async (req, res, next) => {
     where.physical_activity = physical_activity;
   }
   try {
-    const response = await Games.findAll({ limit, offset, where });
+    const count = await Games.count({ where });
+    const query = { limit: +limit, offset: +offset, where };
+    const response = await Games.findAll(query);
     const games = response.map(game => {
       return game.dataValues;
     });
-    res.json({ games, count: games.length });
+    res.json({ games, count });
   } catch (error) {
     console.error(error);
     res.statusCode(500);
