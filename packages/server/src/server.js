@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
+const { Op } = require('sequelize');
 
 const upload = require('./services/Upload');
 const update = require('./services/Update');
@@ -116,37 +117,37 @@ app.get('/api/game', async (req, res, next) => {
 
   const where = {};
   if (grade && grade.length > 0) {
-    where.grade = grade;
+    where.grade = { [Op.overlap]: grade };
   }
 
   if (location && location.length > 0) {
-    where.location = location;
+    where.location = { [Op.overlap]: location };
   }
 
   if (topics && topics.length > 0) {
-    where.topics = topics;
+    where.topics = { [Op.overlap]: topics };
   }
 
   if (classes && classes.length > 0) {
-    where.classes = classes;
+    where.classes = { [Op.overlap]: classes };
   }
 
   if (subjects && subjects.length > 0) {
-    where.subjects = subjects;
+    where.subjects = { [Op.overlap]: subjects };
   }
 
   if (ekoskola_steps && ekoskola_steps.length > 0) {
-    where.subjects = ekoskola_steps;
+    where.subjects = { [Op.overlap]: ekoskola_steps };
   }
 
   if (timing && timing.length > 0) {
-    where.timing = timing;
+    where.timing = { [Op.overlap]: timing };
   }
   if (number_teachers && number_teachers.length > 0) {
-    where.number_teachers = number_teachers;
+    where.number_teachers = { [Op.overlap]: number_teachers };
   }
   if (physical_activity && physical_activity.length > 0) {
-    where.physical_activity = physical_activity;
+    where.physical_activity = { [Op.overlap]: physical_activity };
   }
   try {
     const count = await Games.count({ where });
@@ -158,7 +159,7 @@ app.get('/api/game', async (req, res, next) => {
     res.json({ games, count });
   } catch (error) {
     console.error(error);
-    res.statusCode(500);
+    res.status(500);
   }
 });
 
