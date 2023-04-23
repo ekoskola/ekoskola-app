@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 import ApiService from '../ApiService';
 import { FiltersGame } from '../components/FiltersGame';
@@ -47,8 +48,9 @@ const TextAreaLabel = styled.label`
 `;
 
 const CreateGameContainer = props => {
+  console.log('CreateGameContainer inside !!!');
   const [loading, setLoading] = useState(false);
-  const { history } = props;
+  const navigate = useNavigate();
   const formState = {
     name: '',
     description: '',
@@ -80,15 +82,26 @@ const CreateGameContainer = props => {
   };
 
   const handleRadioButtonChange = event => {
+    console.log('handleRadioButtonChange in CreateGameContainer');
+    console.log('event', event);
     if (event && event.target && event.target.name) {
-      form[event.target.name].length = 0;
-      form[event.target.name].push(event.target.value);
-
+      // TODO: probably mange it when it is boolean type
+      if (event.target.name === 'isTop') {
+        form.isTop = event.target.value === 'yes';
+      } else {
+        form[event.target.name].length = 0;
+        form[event.target.name].push(event.target.value);
+      }
+      console.log('form[event.target.name]', form[event.target.name]);
+      console.log('form', form);
       setForm(Object.assign({}, form));
     }
   };
 
   const handleCheckboxChange = item => {
+    console.log('handleCheckboxChange');
+    console.log('form', form);
+    console.log('form[item.name]', form[item.name]);
     const isChecked = form[item.name].includes(item.value) || false;
     if (isChecked) {
       form[item.name] = form[item.name].filter(selected => selected !== item.value);
@@ -108,7 +121,7 @@ const CreateGameContainer = props => {
       setLoading(true);
 
       const newGame = await ApiService.upload(formData, file.file);
-      history.push(`/games/${newGame.id}`);
+      navigate(`/games/${newGame.id}`);
     } catch (error) {
       // TODO: handle erros
       console.error(`there was an error ${error.message}`);

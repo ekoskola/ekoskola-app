@@ -60,6 +60,7 @@ const Login = ({ isAdmin, setIsAdmin }) => {
   };
 
   const handleSubmit = async event => {
+    console.log('handleSubmit login');
     event.preventDefault();
     try {
       await auth.login(login);

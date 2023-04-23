@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Document, Page } from 'react-pdf';
 
 import Card from '@material-ui/core/Card';
@@ -14,6 +14,7 @@ import CardSectionText from './components/CardSectionText';
 import DocumentWrapper from './components/DocumentWrapper';
 import StarRating from '../StarRating';
 import VoteGameButton from '../VoteGameButton';
+import { SuccessModal } from '../SuccessModal';
 import ApiService from '../../ApiService';
 
 const styles = {
@@ -25,17 +26,33 @@ const styles = {
   },
 };
 
-const GameDetails = ({ id, name, file_id, description, objetive_1, objetive_2, objetive_3 }) => {
+const GameDetails = ({
+  id,
+  name,
+  file_id,
+  description,
+  objetive_1,
+  objetive_2,
+  objetive_3,
+  votes_count,
+  votes_value,
+}) => {
+  const [initialRating, setInitialRating] = useState(0);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [numPages, setNumPages] = useState(null);
   const [rating, setRating] = useState(0);
   const url = window.location.origin;
+
+  useEffect(() => {
+    const starts = votes_value / votes_count;
+    setInitialRating(starts);
+  }, [votes_count, votes_value]);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
 
   const handleRatingChange = value => {
-    console.log(`Rating changed to ${value}`);
     setRating(value);
   };
 
@@ -43,11 +60,18 @@ const GameDetails = ({ id, name, file_id, description, objetive_1, objetive_2, o
     // TODO: make some reaction after voting.
     const response = await ApiService.voteGameById(id, rating);
     console.log('response', response);
+    setIsSuccessModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsSuccessModalOpen(false);
   };
 
   return (
     <Card style={styles.card}>
-      <CardTitle>{name}</CardTitle>
+      <CardTitle>
+        {name} <StarRating initialRating={initialRating} readOnly={true} />
+      </CardTitle>
       <CardContent>
         <CardSectionTitle>Cíle:</CardSectionTitle>
         <ul>
@@ -83,6 +107,7 @@ const GameDetails = ({ id, name, file_id, description, objetive_1, objetive_2, o
           </Document>
         </DocumentWrapper>
       )}
+      <SuccessModal isOpen={isSuccessModalOpen} closeModal={handleCloseModal} />
     </Card>
   );
 };

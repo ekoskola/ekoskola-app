@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Star = styled.span`
@@ -12,10 +12,17 @@ const StarRatingContainer = styled.div`
   justify-content: center;
 `;
 
-function StarRating({ onChange }) {
+function StarRating({ initialRating, readOnly, onChange }) {
   const [rating, setRating] = useState(0);
 
+  useEffect(() => {
+    if (initialRating) {
+      setRating(initialRating);
+    }
+  }, [initialRating]);
+
   const handleStarClick = value => {
+    if (readOnly) return;
     setRating(value);
     if (onChange) {
       onChange(value);

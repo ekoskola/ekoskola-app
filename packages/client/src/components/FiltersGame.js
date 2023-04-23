@@ -67,7 +67,7 @@ const CheckboxList = ({ title = 'titulo', checkboxes, selectedItems, handleChang
           key={index}
           control={
             <Checkbox
-              checked={selectedItems.includes(item.value)}
+              checked={selectedItems?.includes(item.value)}
               onChange={() => handleChange(item)}
               name={item.name}
               value={item.name}
@@ -84,7 +84,7 @@ const CheckboxList = ({ title = 'titulo', checkboxes, selectedItems, handleChang
 export const FiltersGame = props => {
   const { isEdit, handleCheckboxChange, handleRadioButtonChange, formData } = props;
 
-  const { location, grade, topics, subjects, ekoskola_steps, timing } = formData;
+  const { location, grade, topics, subjects, ekoskola_steps, timing, isTop } = formData;
 
   return (
     <TwoColumnWrapper>
@@ -150,6 +150,31 @@ export const FiltersGame = props => {
             handleChange={handleCheckboxChange}
           />
         )}
+      </FormGroup>
+
+      <FormGroup row>
+        {isEdit ? (
+          <RadioList
+            title="Is Top?"
+            groupName="isTop"
+            selected={isTop ? 'yes' : 'no'}
+            checkboxes={['Ano', 'Ne']}
+            radioButtons={[
+              {
+                name: 'isTop',
+                value: 'yes',
+                label: 'Ne',
+              },
+              {
+                name: 'isTop',
+                value: 'no',
+                label: 'Ano',
+              },
+            ]}
+            selectedItems={isTop ? 'Ano' : 'Ne'}
+            handleChange={handleRadioButtonChange}
+          />
+        ) : null}
       </FormGroup>
     </TwoColumnWrapper>
   );

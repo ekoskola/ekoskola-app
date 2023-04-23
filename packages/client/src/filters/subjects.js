@@ -67,7 +67,7 @@ const subjectsCheckboxes = [
   {
     name: 'subjects',
     value: 'eco_team',
-    label: 'Ekotým',
+    label: 'Schůzka Ekotýmu',
   },
 ];
 

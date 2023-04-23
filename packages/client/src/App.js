@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import './styles/style.css';
 
 import GameListContainer from './containers/GameListContainer';
 import GameDetailContainer from './containers/GameDetailContainer';
 import GameFilterContainer from './containers/GameFilterContainer';
+import CreateGameContainer from './containers/CreateGameContainer';
+import EditGameContainer from './containers/EditGameContainer';
 import NotFound from './containers/NotFound';
 import Login from './containers/Login';
 import auth from './services/auth';
 import { Loader } from './components/Loader';
 
 import Layout from './components/Layout';
-import AuthAsyncComponent from './components/AuthAsyncComponent';
 
 const filterInitialState = {
   location: [],
@@ -24,34 +25,6 @@ const filterInitialState = {
   timing: [],
   physical_activity: [],
   number_teachers: [],
-};
-
-const AdminCreateGameContainer = AuthAsyncComponent(() => {
-  return import('./containers/CreateGameContainer');
-});
-
-const PrivateRouteCreateGame = ({ component: Component, ...rest }) => (
-  <Routes>
-    <Route
-      {...rest}
-      render={props => <AdminCreateGameContainer {...props} filterState={filterInitialState} />}
-    />
-  </Routes>
-);
-
-const PrivateRouteEditGame = ({ component: Component, ...rest }) => {
-  console.log('PrivateRouteEditGame');
-  const AdminEditGameContainer = AuthAsyncComponent(() => {
-    return import('./containers/EditGameContainer');
-  });
-  return (
-    <Routes>
-      <Route
-        {...rest}
-        render={props => <AdminEditGameContainer {...props} filterState={filterInitialState} />}
-      />
-    </Routes>
-  );
 };
 
 const App = () => {
@@ -103,8 +76,8 @@ const App = () => {
           <Route path="/games" element={<GameListContainer isAdmin={isAdmin} />} />
           <Route path="/games/:id" element={<GameDetailContainer />} />
           <Route path="/login" element={<Login isAdmin={isAdmin} setIsAdmin={setIsAdmin} />} />
-          <Route path="/create" element={<PrivateRouteCreateGame />} />
-          <Route path="/edit/:id" element={<PrivateRouteEditGame />} />
+          <Route path="/create" element={<CreateGameContainer />} />
+          <Route path="/edit/:id" element={<EditGameContainer />} />
           <Route component={NotFound} />
         </Routes>
       </Layout>

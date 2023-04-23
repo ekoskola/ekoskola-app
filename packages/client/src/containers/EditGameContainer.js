@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import ApiService from '../ApiService';
 import { FiltersGame, RadioList } from '../components/FiltersGame';
@@ -46,10 +47,11 @@ const TextAreaLabel = styled.label`
   color: rgb(4, 166, 75);
 `;
 
-const EditGameContainer = props => {
+const EditGameContainer = () => {
   console.log('EditGameContainer');
-  console.log('props', props);
-  const { match, history } = props;
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(true);
   const formState = {
     name: '',
@@ -71,7 +73,7 @@ const EditGameContainer = props => {
 
   const [form, setForm] = useState(formState);
 
-  const [gameId] = useState(parseInt(match.params.id, 10));
+  const [gameId] = useState(parseInt(id, 10));
 
   const [file, setFile] = useState({
     file: null,
@@ -80,6 +82,7 @@ const EditGameContainer = props => {
   const styles = useStyles();
 
   const fetchGame = async () => {
+    console.log('fetchGame');
     try {
       const game = await ApiService.getGameById(gameId);
       console.log('game', game);
@@ -98,11 +101,13 @@ const EditGameContainer = props => {
   }, []);
 
   const handleTextChange = event => {
+    console.log('handleTextChange');
     form[event.target.name] = event.target.value;
     setForm(Object.assign({}, form));
   };
 
   const handleCheckboxChange = item => {
+    console.log('handleCheckboxChange');
     const isChecked = form[item.name].includes(item.value) || false;
     if (isChecked) {
       form[item.name] = form[item.name].filter(selected => selected !== item.value);
@@ -114,9 +119,15 @@ const EditGameContainer = props => {
 
   const handleRadioButtonChange = event => {
     if (event && event.target && event.target.name) {
-      form[event.target.name].length = 0;
-      form[event.target.name].push(event.target.value);
-
+      // TODO: probably mange it when it is boolean type
+      if (event.target.name === 'isTop') {
+        form.isTop = event.target.value === 'yes';
+      } else {
+        form[event.target.name].length = 0;
+        form[event.target.name].push(event.target.value);
+      }
+      console.log('form[event.target.name]', form[event.target.name]);
+      console.log('form', form);
       setForm(Object.assign({}, form));
     }
   };
@@ -133,7 +144,7 @@ const EditGameContainer = props => {
       setLoading(true);
 
       await ApiService.update(formData, gameId);
-      history.push(`/games/${gameId}`);
+      navigate(`/games/${gameId}`);
     } catch (error) {
       console.error(`there was an error ${error.message}`);
     }
@@ -221,12 +232,6 @@ const EditGameContainer = props => {
             handleCheckboxChange={handleCheckboxChange}
             handleRadioButtonChange={handleRadioButtonChange}
           />
-          {/* <RadioList
-              title="Is Top?"
-              checkboxes={['Ano', 'Ne']}
-              selectedItems={isTop ? 'Ano' : 'Ne'}
-              handleChange={handleRadioButtonChange}
-            /> */}
 
           <Button
             variant="contained"

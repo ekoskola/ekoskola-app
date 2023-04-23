@@ -14,8 +14,8 @@ const createQueryString = json => {
 
 class ApiService {
   constructor() {
-    // this.host = 'http://localhost:8000';
-    this.host = window.origin;
+    this.host = 'http://localhost:8000';
+    // this.host = window.origin;
     this.apiUrl = `${this.host}/api`;
     this.gameFields = `{
       id,
@@ -38,7 +38,7 @@ class ApiService {
   }
 
   async update(formData, gameId) {
-    const { data } = await axios.post(`/update/${gameId}`, formData, {
+    const { data } = await axios.post(`${this.apiUrl}/update/${gameId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -48,7 +48,7 @@ class ApiService {
   }
 
   async upload(formData) {
-    const { data } = await axios.post('/upload', formData, {
+    const { data } = await axios.post(`${this.apiUrl}/upload`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -58,13 +58,16 @@ class ApiService {
   }
 
   async removeGame(gameId) {
-    const { data } = await axios.post(`/remove/${gameId}`);
+    const { data } = await axios.post(`${this.apiUrl}/remove/${gameId}`);
 
     return data;
   }
 
   async login({ username, password }) {
-    const { data } = await axios.post(`${this.host}/login`, {
+    console.log('login');
+    console.log('username', username);
+    console.log('password', password);
+    const { data } = await axios.post(`${this.apiUrl}/login`, {
       username,
       password,
     });
@@ -79,7 +82,7 @@ class ApiService {
   }
 
   async auth() {
-    const res = await fetch(`${this.host}/auth`, {
+    const res = await fetch(`${this.apiUrl}/auth`, {
       method: 'POST',
       mode: 'cors',
       headers: new Headers({
@@ -87,9 +90,11 @@ class ApiService {
         Accept: 'application/json',
       }),
     });
+    console.log('res', res);
     if (res.ok) {
       const body = await res.json();
-      return body.data;
+      console.log('body', body);
+      return body;
     } else {
       throw new Error(res.status);
     }

@@ -1,6 +1,7 @@
 import React from 'react';
 import EkoskolaIcon from './EkoskolaIcon';
 import styled from 'styled-components';
+import { link } from 'react-router-dom';
 
 const HeaderTag = styled.header`
   height: 85px;
@@ -15,7 +16,7 @@ const HeaderWrapper = styled.div`
   font-size: 16px;
 `;
 
-const HeaderLink = styled.div`
+const HeaderLink = styled.a`
   float: left;
   text-align: center;
   padding: 12px;
@@ -84,7 +85,7 @@ const Header = props => {
               </HeaderLink>
             </React.Fragment>
           ) : (
-            <HeaderLink href="/create">Login</HeaderLink>
+            <HeaderLink href="/login">Login</HeaderLink>
           )}
         </HeaderActions>
       </HeaderWrapper>

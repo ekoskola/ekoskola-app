@@ -7,7 +7,7 @@ const ekoskolaStepsCheckboxes = [
   {
     name: 'ekoskola_steps',
     value: 'analysis',
-    label: 'Analýza',
+    label: 'Průzkum školy',
   },
   {
     name: 'ekoskola_steps',
@@ -33,6 +33,11 @@ const ekoskolaStepsCheckboxes = [
     name: 'ekoskola_steps',
     value: 'ecoschool_dex',
     label: 'Ekokodex',
+  },
+  {
+    name: 'ekoskola_steps',
+    value: 'seven_steps',
+    label: 'Sedm kroků Ekoškoly',
   },
 ];
 
