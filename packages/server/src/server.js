@@ -61,6 +61,7 @@ app.post('/api/login', async (req, res, next) => {
 });
 
 app.post('/api/logout', (req, res, next) => {
+  console.log('logout');
   res.cookie('token', null, { httpOnly: true });
   return res.status(200).json({});
 });
@@ -86,7 +87,7 @@ app.post('/api/game/:id/vote', async (req, res, next) => {
     },
   });
 
-  const response = await Games.update(
+  await Games.update(
     {
       votes_value: previousGame.votes_value + rating,
       votes_count: previousGame.votes_count + 1,
@@ -97,6 +98,11 @@ app.post('/api/game/:id/vote', async (req, res, next) => {
       },
     },
   );
+  const response = await Games.findOne({
+    where: {
+      id,
+    },
+  });
   res.json(response.dataValues);
 });
 
@@ -115,6 +121,7 @@ app.get('/api/game', async (req, res, next) => {
     physical_activity,
   } = req.query;
 
+  // TODO: order results for the one with `isTop` to be first.
   const where = {};
   if (grade && grade.length > 0) {
     where.grade = { [Op.overlap]: grade };
@@ -166,7 +173,7 @@ app.get('/api/game', async (req, res, next) => {
 app.post('/api/auth', (req, res, next) => {
   const { token } = req.cookies;
 
-  return res.status(200).json({ username: 'test', token: 'test' });
+  // return res.status(200).json({ username: 'test', token: 'test' });
 
   authService.verify(token, (err, decodedToken) => {
     if (err) {
