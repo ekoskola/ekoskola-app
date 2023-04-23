@@ -15,6 +15,7 @@ import DocumentWrapper from './components/DocumentWrapper';
 import StarRating from '../StarRating';
 import VoteGameButton from '../VoteGameButton';
 import { SuccessModal } from '../SuccessModal';
+import { VotedText } from '../VotedText';
 import ApiService from '../../ApiService';
 
 const styles = {
@@ -93,6 +94,7 @@ const GameDetails = ({
         <CardSectionText>{description}</CardSectionText>
       </CardContent>
       <CardActions>
+        <VotedText count={votes_count} />
         <StarRating onChange={handleRatingChange} />
         <VoteGameButton onClick={handleVoteGame} />
         <DownloadGameButton fileId={file_id} />
