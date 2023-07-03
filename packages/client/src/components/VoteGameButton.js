@@ -5,7 +5,7 @@ import ColorButton from './ColorButton';
 function VoteGameButton({ onClick }) {
   return (
     <React.Fragment>
-      <ColorButton variant="contained" title="hlasovací hra" color="primary" onClick={onClick}>
+      <ColorButton variant="contained" title="Hodnocení aktivity" color="primary" onClick={onClick}>
         Hlasovací hra
       </ColorButton>
     </React.Fragment>

@@ -33,7 +33,7 @@ const GameDetailContainer = () => {
     <Container fixed>
       <IconButton onClick={() => navigate(-1)} aria-label="zpět na seznam her">
         <ArrowBackIcon />
-        Zpět na seznam her
+        Zpět na seznam materiálů a aktivit
       </IconButton>
       {loading ? <h1 className="text-center">...loading</h1> : <GameDetails {...game} />}
     </Container>
