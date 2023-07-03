@@ -144,7 +144,7 @@ app.get('/api/game', async (req, res, next) => {
   }
 
   if (ekoskola_steps && ekoskola_steps.length > 0) {
-    where.subjects = { [Op.overlap]: ekoskola_steps };
+    where.ekoskola_steps = { [Op.overlap]: ekoskola_steps };
   }
 
   if (timing && timing.length > 0) {
@@ -158,12 +158,22 @@ app.get('/api/game', async (req, res, next) => {
   }
   try {
     const count = await Games.count({ where });
-    const query = { limit: +limit, offset: +offset, where };
+    const query = {
+      limit: +limit,
+      offset: +offset,
+      where,
+      order: [
+        ['isTop', 'ASC'],
+        ['votes_value', 'ASC'],
+      ],
+    };
     const response = await Games.findAll(query);
     const games = response.map(game => {
       return game.dataValues;
     });
-    res.json({ games, count });
+    const calculateVotes = game => game.votes_value / game.votes_count;
+    const orderGames = games.sort((a, b) => calculateVotes(b) - calculateVotes(a));
+    res.json({ games: orderGames, count });
   } catch (error) {
     console.error(error);
     res.status(500);
