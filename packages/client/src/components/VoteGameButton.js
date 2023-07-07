@@ -6,7 +6,7 @@ function VoteGameButton({ onClick }) {
   return (
     <React.Fragment>
       <ColorButton variant="contained" title="Hodnocení aktivity" color="primary" onClick={onClick}>
-        Hlasovací hra
+        Hodnocení aktivity
       </ColorButton>
     </React.Fragment>
   );
