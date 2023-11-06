@@ -1,32 +1,33 @@
 {
-  "name": "root",
-  "private": true,
-  "workspaces": [
-    "packages/client",
-    "packages/server"
-  ],
+  "name": "ekoskola-app",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "license": "MIT",
   "scripts": {
-    "dev": "lerna run --stream --scope @ekoskola/games-client start",
-    "dev:be": "lerna run --stream --scope @ekoskola/games-server start",
-    "dev:all": "lerna run --parallel start",
-    "build": "lerna run --parallel build",
-    "serve": "lerna run --stream --scope @ekoskola/games-server serve",
-    "format": "lerna run format",
-    "add:fe": "yarn workspace @ekoskola/games-client add",
-    "add:be": "yarn workspace @ekoskola/games-server add",
-    "remove:fe": "yarn workspace @ekoskola/games-client remove",
-    "remove:be": "yarn workspace @ekoskola/games-server remove",
+    "dev": "yarn workspace @ekoskola/client start",
+    "dev:be": "yarn workspace @ekoskola/server start",
+    "dev:all": "yarn workspaces foreach run start",
+    "build": "yarn workspaces foreach run build",
+    "serve": "yarn workspaces @ekoskola/server serve",
+    "format": "yarn workspaces foreach run format",
+    "add:fe": "yarn workspace @ekoskola/client add",
+    "add:be": "yarn workspace @ekoskola/server add",
+    "remove:fe": "yarn workspace @ekoskola/client remove",
+    "remove:be": "yarn workspace @ekoskola/server remove",
     "db:migrate": "yarn workspace @ekoskola/server db:migrate",
     "db:rollback": "yarn workspace @ekoskola/server db:rollback",
     "db:undo": "yarn workspace @ekoskola/server db:undo",
     "db:seed": "yarn workspace @ekoskola/server db:seed"
   },
   "devDependencies": {
-    "lerna": "^6.1.0",
     "prettier": "2.8.0"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "1.6.0",
     "exceljs": "^3.7.0"
-  }
+  },
+  "packageManager": "yarn@3.6.3"
 }

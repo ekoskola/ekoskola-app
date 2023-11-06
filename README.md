@@ -1,85 +1,16 @@
 # Ekoskola
 
-## Start
-
-The express server is in charge of serving the react app so:
-
-The react app should be build
-
-```bash
-cd client/
-npm run build
-```
-
-```bash
-cd server/
-npm run build
-npm run serve
-```
-
-For production run it with pm2
-
-```bash
-pm2-runtime start ecosystem.config.js
-```
-
-And you can access the site with:
-
-http://localhost:8000
-
-## Migrations
-
-You can use following commands
-```
-npm run db:pending # list pending migrations
-npm run db:migrate # migrate pending migrations
-npm run db:rollback # rollback last migration
-```
-
-## How to use graphql
-
-* cURL
+## Development
 
 ```
-curl \
-  -X POST \
-  -H "Content-Type: application/json" \
-  --data '{"query":"{games (grade:[\"kinder_garden\"]) {id, name, file_id, description, outdoor, grade}}"}' \
-  http://localhost:8000/graphql
+# Run postgresSQL in docker container.
+bash scripts/init_db.sh
+yarn db:migrate
+yarn db:seed
+yarn workspace @ekoskola/server start
 ```
 
-* With pagination
-
-```
-{
-  games(limit: 1, offset: 0, location: ["outdoor"])  {id, name, file_id, description, location, grade, topics, classes}
-}
-```
-
-
-```
-mutation {
-  addGame(name: "juego 234234", description: "some useful txt", outdoor: true) {
-    id
-    description
-    outdoor
-  }
-}
-```
-
-## Docker
-
-Run it with:
-
-```
-docker-compose up --build
-```
-
-If permisions are needed to have `data` directory with postgres persistent data
-
-```
-sudo chmod -R 777 ./data/
-```
+It should run server.
 
 ## Password with nginx
 
@@ -104,4 +35,50 @@ And restart nginx:
 
 ```bash
 sudo service nginx restart
+```
+
+## Setup
+
+- Generate secret for JWT
+
+```bash
+head -c 32 /dev/urandom | base64 | tr -d '\n'
+```
+
+## Deploy
+
+Run the commands below:
+
+```
+nix-shell
+morph deploy network.nix switch
+```
+
+## Systemd
+
+- Restart a service
+
+```
+systemctl restart <name-of-the-service>
+```
+
+- Check status of service
+
+```
+systemctl status <name-of-the-service>.service
+```
+
+- Logs of the service
+
+```
+journalctl -f -u <name-of-the-service>
+```
+
+## DB
+
+- Login
+
+```
+sudo -i -u postgres
+psql
 ```
