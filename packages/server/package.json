@@ -1,7 +1,6 @@
 {
   "name": "@ekoskola/server",
   "version": "1.0.0",
-  "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/server.js --exec babel-node --presets node6",
@@ -13,7 +12,6 @@
     "db:undo": "npx sequelize-cli db:seed:undo",
     "db:seed": "npx sequelize-cli db:seed:all"
   },
-  "license": "ISC",
   "dependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-node6": "^11.0.0",
