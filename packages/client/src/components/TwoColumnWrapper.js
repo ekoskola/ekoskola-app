@@ -5,6 +5,9 @@ const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  @media screen and (max-width: 1500px) {
+    flex-direction: column;
+  }
 `;
 
 const Column = styled.div`

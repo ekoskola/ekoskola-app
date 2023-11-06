@@ -42,6 +42,8 @@ const GameDetails = ({
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [numPages, setNumPages] = useState(null);
   const [rating, setRating] = useState(0);
+  // `isVoted` is used to disable voting button after voting, user can still reload and vote.
+  const [isVoted, setIsVoted] = useState(false);
   const url = window.location.origin;
 
   useEffect(() => {
@@ -59,8 +61,10 @@ const GameDetails = ({
 
   const handleVoteGame = async () => {
     // TODO: make some reaction after voting.
+    if (isVoted) return;
     const response = await ApiService.voteGameById(id, rating);
     console.log('response', response);
+    setIsVoted(true);
     setIsSuccessModalOpen(true);
   };
 
@@ -96,14 +100,14 @@ const GameDetails = ({
       <CardActions>
         <VotedText count={votes_count} />
         <StarRating onChange={handleRatingChange} />
-        <VoteGameButton onClick={handleVoteGame} />
+        <VoteGameButton isDisabled={isVoted} onClick={handleVoteGame} />
         <DownloadGameButton fileId={file_id} />
       </CardActions>
       {file_id && (
         <DocumentWrapper>
           <Document file={`${url}/api/download/${file_id}`} onLoadSuccess={onDocumentLoadSuccess}>
             {[...new Array(numPages)].map((item, index) => (
-              <Page pageNumber={index + 1} width="1000" />
+              <Page pageNumber={index + 1} size="A4" />
               // <Page pageNumber={index + 1} />
             ))}
           </Document>

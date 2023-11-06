@@ -11,8 +11,8 @@ const GameList = props => {
   if (!games || !games.length) {
     return (
       <h2>
-        Tvůj výběr byl moc specifický, zkus ubrat nějaké zaškrtnutí. Když nezaškrtneš nic, objeví se
-        ti všechny aktivity co máme.{' '}
+        Aktivity a publikace nejsou v tomto výběru k dispozici. Pokud vám něco chybí napište nám,
+        rádi tuto oblast doplníme. Zkuste zatím jiný výběr. Děkujeme za pochopení.
       </h2>
     );
   }
