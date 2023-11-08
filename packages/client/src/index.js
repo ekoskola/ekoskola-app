@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-// import { BrowserRouter } from 'react-router-dom';
-// import registerServiceWorker from './registerServiceWorker';
 
 import { pdfjs } from 'react-pdf';
 
@@ -12,7 +10,8 @@ import i18next from 'i18next';
 import translations_cz from './translations/cz/translations.json';
 import translations_en from './translations/en/translations.json';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+// TODO: this could be copied to `public`.
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 i18next.init({
   interpolation: { escapeValue: false }, // React already does escaping

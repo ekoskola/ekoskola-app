@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Document, Page } from 'react-pdf';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -17,6 +17,14 @@ import VoteGameButton from '../VoteGameButton';
 import { SuccessModal } from '../SuccessModal';
 import { VotedText } from '../VotedText';
 import ApiService from '../../ApiService';
+
+const maxWidth = 1200;
+
+const options = {
+  // TODO: this could be copied to `public`.
+  cMapUrl: `https://unpkg.com/pdfjs-dist@${pdfjs.version}/cmaps/`,
+  standardFontDataUrl: `https://unpkg.com/pdfjs-dist@${pdfjs.version}/standard_fonts`,
+};
 
 const styles = {
   card: {
@@ -45,6 +53,7 @@ const GameDetails = ({
   // `isVoted` is used to disable voting button after voting, user can still reload and vote.
   const [isVoted, setIsVoted] = useState(false);
   const url = window.location.origin;
+  const fileUrl = `${url}/api/download/${file_id}`;
 
   useEffect(() => {
     const starts = votes_value / votes_count;
@@ -62,8 +71,7 @@ const GameDetails = ({
   const handleVoteGame = async () => {
     // TODO: make some reaction after voting.
     if (isVoted) return;
-    const response = await ApiService.voteGameById(id, rating);
-    console.log('response', response);
+    await ApiService.voteGameById(id, rating);
     setIsVoted(true);
     setIsSuccessModalOpen(true);
   };
@@ -105,10 +113,14 @@ const GameDetails = ({
       </CardActions>
       {file_id && (
         <DocumentWrapper>
-          <Document file={`${url}/api/download/${file_id}`} onLoadSuccess={onDocumentLoadSuccess}>
+          <Document file={fileUrl} onLoadSuccess={onDocumentLoadSuccess} options={options}>
             {[...new Array(numPages)].map((item, index) => (
-              <Page pageNumber={index + 1} size="A4" />
-              // <Page pageNumber={index + 1} />
+              <Page
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+                pageNumber={index + 1}
+                width={maxWidth}
+              />
             ))}
           </Document>
         </DocumentWrapper>
