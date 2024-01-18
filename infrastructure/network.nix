@@ -62,6 +62,9 @@ let envHelper = import ./env.nix; in
         enableACME = true;
         locations."/" = {
           proxyPass = "http://127.0.0.1:8000";
+          basicAuth = {
+            ekoskola = "${envHelper.EKOSKOLA_SERVER_NGINX_BASIC_AUTH}";
+          };
         };
       };
       # virtualHosts."${envHelper.EKOSKOLA_FRONTEND_NGINX_HOST}" = {
@@ -83,18 +86,18 @@ let envHelper = import ./env.nix; in
       acceptTerms = true;
     };
 
-
-    deployment.healthChecks = {
-      http = [
-        {
-          scheme = "https";
-          port = 443;
-          host = envHelper.EKOSKOLA_SERVER_NGINX_HOST;
-          path = "/";
-          description = "Check that ekoskola is running.";
-        }
-      ];
-    };
+    # When using basicAuth in nginx healthChecks are not applicable
+    # deployment.healthChecks = {
+    #   http = [
+    #     {
+    #       scheme = "https";
+    #       port = 443;
+    #       host = envHelper.EKOSKOLA_SERVER_NGINX_HOST;
+    #       path = "/";
+    #       description = "Check that ekoskola is running.";
+    #     }
+    #   ];
+    # };
 
   };
 }
